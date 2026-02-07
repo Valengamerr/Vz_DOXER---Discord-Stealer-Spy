@@ -17,3 +17,5 @@ Una herramienta que saca captura a la pantalla, captura la webcam, Extrae archiv
 
 > [!NOTE]
 > - Al ejecutar el archivo `payload.py` se enviara una captura de la `Pantalla` y de la `Webcam` y tambien empezará a enviar archivos con palabras clave como Contraseña y con extensiones como .txt o .pdf
+
+### Instalacion: WINDOWS
