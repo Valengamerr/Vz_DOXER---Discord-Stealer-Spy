@@ -20,8 +20,10 @@ Una herramienta que saca captura a la pantalla, captura la webcam, Extrae archiv
 
 > [!CAUTION]
 >  - Si no queres que el usuario se de cuenta de que el codigo tiene intenciones de robo de archivos y datos Obfusca el codigo con ``` https://freecodingtools.org/tools/obfuscator/python ```
-> - Si no queres que el usuario tenga que instalar librerias de python simplemente usa PyInstaller solo para windows ``` pyinstaller --onefile --noconsole payload.py ```
-> - si lo queres ejecutar en linux con ```pyinstaller ``` es nesesario installa ``` WINE : https://www.winehq.org/``` 
+> - Si no queres que el usuario tenga que instalar librerias de python simplemente usa PyInstaller solo para windows ``` pyinstaller --onefile --noconsole --name "Ejecutale payload" payload.py ```
+>   
+> -  Si queres añadirle un icono al payload con pyinstaller usa  ``` pyinstaller --onefile --noconsole --icon=Icono.ico --name "Ejecutale payload" payload.py ```
+> - si lo queres ejecutar en linux con ```pyinstaller ``` es nesesario instalar ``` WINE : https://www.winehq.org/``` al instalarlo ejecuta ``` wine  ```  
 
 ### Instalacion ___________________________________________________________________________________________________________________________
 
