@@ -25,7 +25,7 @@ Una herramienta que saca captura a la pantalla, captura la webcam, Extrae archiv
 > -  Si queres añadirle un icono al payload con pyinstaller usa  ``` pyinstaller --onefile --noconsole --icon=Icono.ico --name "Ejecutable payload" payload.py ```
 > - si lo queres ejecutar en linux con ```pyinstaller ``` es nesesario instalar ``` WINE : https://www.winehq.org/``` al instalarlo ejecuta ``` wine Ejecutable.exe ```  
 
-### Instalacion _____________________________________________________________________________________________________
+### Instalacion ____________________________________________________________________________________________________
 > [!CAUTION]
 > Tenes que tener instalado python
 
