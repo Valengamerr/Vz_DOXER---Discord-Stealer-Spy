@@ -23,7 +23,7 @@ Una herramienta que saca captura a la pantalla, captura la webcam, Extrae archiv
 
 
 
-### Instalacion ____________________________________________________________________________________________________________________________
+### Instalacion ___________________________________________________________________________________________________________________________
 
 > [!CAUTION]
 > Tenes que tener instalado python
