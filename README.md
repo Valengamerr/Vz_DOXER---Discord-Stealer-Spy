@@ -14,7 +14,7 @@ Una herramienta que saca captura a la pantalla, captura la webcam, Extrae archiv
 > - Info: Nombre PC
 > - Info: Red wifi
 > - Info: Lista de Emails
-> - Seguridad: El archivo al terminal el robo de datos se auto encripta y despues de borra
+> - Seguridad: El archivo al terminal el robo de datos se auto encripta y despues se borra
 > - Robar: Archivos (.txt .pdf  .docx   .jpg  .png  .sql  .sqlite .db .kdbx) (DNI  Contraseña  CONTRASEÑA  Usuarios  SQL Password Cuentas Claves Login Wallet)
 > - Robar: Emails y Contraseña, Credenciales
 > - Robar: Cryptomonedas
