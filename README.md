@@ -20,9 +20,7 @@ Una herramienta que saca captura a la pantalla, captura la webcam, Extrae archiv
 
 > [!CAUTION]
 > Si no queres que el usuario se de cuenta de que el codigo tiene intenciones de robo de archivos y datos usa el archivo "payload_Obfuscado.py"
-> Si no queres que el usuario tenga que instalar librerias de python simplemente usa PyInstaller solo para windows
-
-`` pyinstaller --onefile --noconsole payload.py ``
+> Si no queres que el usuario tenga que instalar librerias de python simplemente usa PyInstaller solo para windows ``` pyinstaller --onefile --noconsole payload.py ```
 
 ### Instalacion ___________________________________________________________________________________________________________________________
 
